@@ -1,0 +1,55 @@
+{
+  "generatedAt": "2026-08-05T04:00:00Z",
+  "worldNews": [
+    {
+      "headline": "US stocks close at record highs as AI-driven rally continues",
+      "why": "The Dow jumped over 900 points to 54,085.88 and the Nasdaq rose 2.59% to 26,584.99, led by AI and semiconductor names (Palantir +29%). Signals strong risk-on sentiment tied to AI capex and earnings."
+    },
+    {
+      "headline": "Asian markets rally in sympathy — Nikkei +3.3%, Kospi +4.4%, Taiex +3.1%",
+      "why": "Shows the AI-driven rally is global, not just a US story, with semiconductor and AI hardware names leading gains across Asia."
+    },
+    {
+      "headline": "Hopes rise for a US-Iran deal to reopen the Strait of Hormuz",
+      "why": "Qatar has drafted a proposal and US Treasury Secretary Bessent suggested a deal could land this week. Brent crude fell 1.2% to $78.43/barrel on the news — a geopolitical de-escalation with direct market impact."
+    },
+    {
+      "headline": "Margin debt hits an all-time high",
+      "why": "Elevated leverage in the system raises the risk of sharper swings if sentiment turns — worth watching as a fragility signal even amid record index highs."
+    },
+    {
+      "headline": "Goldman Sachs expands its Dallas presence amid a Texas financial boom",
+      "why": "Local leaders are calling it \"Y'all Street\" — another sign that financial-sector activity is diversifying beyond traditional hubs like New York."
+    },
+    {
+      "headline": "Wildfires displace nearly a quarter of Spokane, WA residents",
+      "why": "Hundreds of homes destroyed and a suspect arrested in one of three fires — a major domestic disaster with significant human and economic cost."
+    },
+    {
+      "headline": "US grants fund medical drone delivery in Rwanda while cutting other aid",
+      "why": "Reflects a broader shift in US foreign-aid strategy toward targeted technology investment rather than broad-based assistance."
+    }
+  ],
+  "aiSales": [
+    {
+      "headline": "Conversation intelligence hits ~84% predictive accuracy for deal outcomes",
+      "takeaway": "Gong, Chorus, and Clari are moving from post-call analysis to real-time in-call guidance. Consider piloting live call guidance on your highest-value deals to catch risk signals before they cost the deal, not after."
+    },
+    {
+      "headline": "Standalone CI tools are merging into unified enablement platforms",
+      "takeaway": "Buyers increasingly want one system instead of stitched-together point solutions. When evaluating vendors, weigh their consolidation roadmap — a unified platform may cut tool sprawl and boost rep adoption."
+    },
+    {
+      "headline": "AI roleplay and skill-practice tools are going mainstream (Hyperbound, Second Nature, Tough Tongue AI)",
+      "takeaway": "Use AI roleplay simulations for onboarding and new-messaging rollouts so reps get repetitions before live calls — a low-risk way to cut ramp time."
+    },
+    {
+      "headline": "AI is shifting from 'recommend' to 'execute' — auto-updating CRM and drafting follow-ups",
+      "takeaway": "Audit your current stack for rote admin tasks (CRM logging, follow-up drafts) that AI could take over, freeing enablement time for coaching design instead of busywork support."
+    },
+    {
+      "headline": "50% of sales pros say AI enables scalability that wasn't possible before",
+      "takeaway": "A useful data point for building the internal business case for enablement AI budget — pair it with a concrete pilot result from your own team for maximum impact."
+    }
+  ]
+}

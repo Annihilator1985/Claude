@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Daily Summary</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="page-header">
+    <h1>Daily Summary</h1>
+    <p id="today-date" class="subtitle"></p>
+  </header>
+
+  <main class="grid">
+    <section class="card" id="weather-card">
+      <h2>Weather &mdash; Sofia, Bulgaria</h2>
+      <div class="card-body" id="weather-body">
+        <p class="loading">Loading weather&hellip;</p>
+      </div>
+    </section>
+
+    <section class="card" id="sports-card">
+      <h2>Sport World News</h2>
+      <div class="card-body" id="sports-body">
+        <p class="loading">Loading sports headlines&hellip;</p>
+      </div>
+    </section>
+
+    <section class="card wide" id="worldnews-card">
+      <h2>World News &amp; Finance Digest</h2>
+      <p class="card-meta" id="worldnews-meta"></p>
+      <div class="card-body" id="worldnews-body">
+        <p class="loading">Loading digest&hellip;</p>
+      </div>
+    </section>
+
+    <section class="card wide" id="aisales-card">
+      <h2>AI for Sales Enablement</h2>
+      <p class="card-meta" id="aisales-meta"></p>
+      <div class="card-body" id="aisales-body">
+        <p class="loading">Loading digest&hellip;</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <p>Weather and sports headlines are fetched live on page load. The news &amp; AI digests refresh once per day.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
