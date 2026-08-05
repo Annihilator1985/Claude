@@ -67,24 +67,27 @@ body {
   font-size: 0.95rem;
 }
 
-.clock {
-  margin: 0.35rem 0 0;
-  font-size: 1.1rem;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  color: var(--header-text);
+.top-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem 1.25rem;
 }
 
-.grid {
+.news-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 1.25rem;
-  max-width: 1000px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 1.5rem 2rem;
+  align-items: start;
 }
 
-.card {
+.card,
+.widget {
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -95,13 +98,110 @@ body {
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
 }
 
-.card.wide {
-  grid-column: 1 / -1;
-}
-
-.card h2 {
+.card h2,
+.widget h2 {
   margin: 0 0 0.75rem;
   font-size: 1.15rem;
+}
+
+.widget {
+  flex: 1 1 260px;
+}
+
+.clock-widget,
+.calendar-widget {
+  text-align: center;
+}
+
+.analog-clock {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.clock-face {
+  fill: rgba(255, 255, 255, 0.15);
+  stroke: var(--text);
+  stroke-opacity: 0.35;
+  stroke-width: 2;
+}
+
+.clock-tick {
+  stroke: var(--text);
+  stroke-opacity: 0.4;
+  stroke-width: 2;
+}
+
+.clock-hand {
+  stroke: var(--text);
+  stroke-linecap: round;
+}
+
+.hour-hand {
+  stroke-width: 5;
+}
+
+.minute-hand {
+  stroke-width: 3.5;
+}
+
+.second-hand {
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.clock-center {
+  fill: var(--accent);
+}
+
+.clock-digital {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.calendar-weekdays,
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.2rem;
+}
+
+.calendar-weekdays {
+  margin-bottom: 0.35rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.calendar-grid .calendar-day {
+  padding: 0.35rem 0;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.calendar-grid .calendar-day.empty {
+  visibility: hidden;
+}
+
+.calendar-grid .calendar-day.today {
+  background: var(--accent);
+  color: var(--card-bg);
+  font-weight: 700;
+}
+
+.placeholder-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0.6;
+}
+
+.placeholder-text {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 0;
 }
 
 .card-meta {
@@ -188,7 +288,7 @@ body {
 }
 
 .bullet-list li {
-  padding: 0.6rem 0;
+  padding: 0.5rem 0;
   border-bottom: 1px solid var(--border);
 }
 
@@ -227,8 +327,23 @@ body {
   padding: 1rem 1.5rem 2.5rem;
 }
 
-@media (max-width: 700px) {
-  .grid {
+@media (max-width: 1200px) {
+  .news-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 820px) {
+  .news-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 540px) {
+  .news-grid {
     grid-template-columns: 1fr;
+  }
+  .top-row {
+    flex-direction: column;
   }
 }

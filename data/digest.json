@@ -1,30 +1,50 @@
 {
-  "generatedAt": "2026-08-05T07:30:00Z",
+  "generatedAt": "2026-08-05T09:15:00Z",
   "worldNews": [
     {
-      "headline": "Palantir stock jumps 29% after an \"otherworldly\" AI-driven quarter",
-      "why": "US commercial revenue grew 149% year-over-year and the company raised full-year guidance to $8.16B, underscoring how strong AI-sovereignty demand is fueling the broader market rally.",
-      "url": "https://www.cnbc.com/2026/08/04/palantir-2q-earnings-ai-sovereign-tools.html"
+      "headline": "Russian missile barrage kills nine in Kyiv overnight as air defenses strain",
+      "why": "One of the most intense recent barrages on Kyiv underscores how stretched Ukraine's air defenses have become.",
+      "url": "https://www.npr.org/2026/08/01/nx-s1-5916393/overnight-russia-kyiv-ukraine-strikes"
     },
     {
-      "headline": "Musk says SpaceX will build exclusively on Nvidia's next-gen Vera Rubin chips",
-      "why": "On SpaceX's first earnings call as a public company, Musk committed to Nvidia hardware for its orbital AI data centers — a major vote of confidence that sent Nvidia shares higher.",
-      "url": "https://www.cnbc.com/2026/08/04/spacex-spcx-earnings-live-updates-q2-2026.html"
-    },
-    {
-      "headline": "Iran and Oman make progress on a deal to reopen the Strait of Hormuz",
-      "why": "A workable shipping-lane agreement could ease the Middle East crisis and oil-supply risk; Brent crude has already dipped on the news, with US officials suggesting a deal could land within days.",
-      "url": "https://www.pbs.org/newshour/world/iran-and-oman-make-progress-on-deal-to-reopen-strait-of-hormuz-officials-say"
-    },
-    {
-      "headline": "Fighting breaks out in western Tigray, threatening Ethiopia's peace deal",
-      "why": "The clashes are among the most serious breaches yet of the three-year-old ceasefire, raising the risk of a renewed large-scale conflict in the Horn of Africa.",
-      "url": "https://www.aljazeera.com/news/2026/8/1/fighting-breaks-out-in-western-tigray-as-ethiopia-and-tplf-trade-blame"
+      "headline": "NATO says Russia would \"lose a lot\" if it attacked the Baltics",
+      "why": "A deterrence signal from NATO's military chief amid rising alliance concern over Russian intentions beyond Ukraine.",
+      "url": "https://www.cnbc.com/2026/07/20/nato-russia-ukraine-war-missile-attacks-drone-europe-defense-.html"
     },
     {
       "headline": "Ukraine's Patriot interceptor shortage is leaving its skies exposed",
-      "why": "Production of PAC-3 missiles can't keep pace with consumption, and recent Russian strikes went entirely unintercepted — a critical capability gap with direct humanitarian stakes.",
+      "why": "Production can't keep pace with consumption, and recent Russian strikes went entirely unintercepted — a critical capability gap.",
       "url": "https://www.bloomberg.com/news/articles/2026-07-07/ukraine-air-force-data-expose-shortfall-in-us-patriot-missiles"
+    },
+    {
+      "headline": "Ships shun the Strait of Hormuz as renewed fighting strains the key oil corridor",
+      "why": "Vessel traffic has dropped as much as 66% week-on-week, a direct hit to global energy shipping.",
+      "url": "https://www.cnbc.com/2026/07/21/strait-of-hormuz-traffic-renewed-us-iran-conflict-chokes-hormuz.html"
+    },
+    {
+      "headline": "Cargo ship struck by an unknown projectile in the Strait of Hormuz, one crew member missing",
+      "why": "Part of a wider pattern of drone overflights and projectile strikes on merchant vessels in the Gulf.",
+      "url": "https://gcaptain.com/cargo-ship-hit-by-projectile-in-strait-of-hormuz-one-crew-member-missing/"
+    },
+    {
+      "headline": "Trump gives Iran \"one last chance\" to reach a deal",
+      "why": "Signals a possible two-phase plan — reopening the Strait first, addressing Iran's nuclear program second — though Tehran disputes talks are even underway.",
+      "url": "https://www.aljazeera.com/features/2026/8/4/one-last-chance-the-times-trump-threatened-iran-said-deal-imminent"
+    },
+    {
+      "headline": "Iran and Oman make progress on a deal to reopen the Strait of Hormuz",
+      "why": "A workable shipping-lane agreement could meaningfully de-escalate the region's biggest current flashpoint.",
+      "url": "https://www.pbs.org/newshour/world/iran-and-oman-make-progress-on-deal-to-reopen-strait-of-hormuz-officials-say"
+    },
+    {
+      "headline": "Qatar, Egypt and Turkey condemn Israel over Gaza strikes, warn ceasefire at risk",
+      "why": "The three ceasefire mediators say continued strikes on health facilities risk unraveling the truce entirely.",
+      "url": "https://www.i24news.tv/en/news/middle-east/palestinian-territories/artc-qatar-egypt-and-turkey-condemn-israeli-strikes-in-gaza-warn-ceasefire-at-risk"
+    },
+    {
+      "headline": "Fighting breaks out in western Tigray, threatening Ethiopia's peace deal",
+      "why": "Among the most serious breaches yet of the three-year-old ceasefire, raising fears of renewed war in the Horn of Africa.",
+      "url": "https://www.aljazeera.com/news/2026/8/1/fighting-breaks-out-in-western-tigray-as-ethiopia-and-tplf-trade-blame"
     },
     {
       "headline": "Arson suspect arrested over deadly Spokane wildfires",
@@ -32,56 +52,183 @@
       "url": "https://www.cbsnews.com/news/spokane-washington-wildfires-homes-destroyed/"
     },
     {
-      "headline": "Goldman Sachs deepens its bet on \"Y'all Street\" with a $700M Dallas campus",
-      "why": "The move reflects a broader migration of financial-sector jobs from high-cost hubs like New York toward lower-cost cities such as Dallas — a notable regional economic shift.",
-      "url": "https://www.npr.org/2026/08/04/nx-s1-5697067/texas-banking-goldman-sachs-wall-street"
+      "headline": "Rwanda's drone healthcare program gets a US grant even as other US aid is cut",
+      "why": "Illustrates a broader US shift toward tech-vendor-led foreign assistance over traditional aid organizations.",
+      "url": "https://www.npr.org/2026/08/04/g-s1-136906/drones-healthcare-trump-administration-rwanda"
     },
     {
-      "headline": "US margin debt hits a fresh record high",
-      "why": "Investor borrowing is growing far faster than the market itself — a leverage pattern that has preceded past downturns, even though it isn't a guaranteed crash signal.",
-      "url": "https://www.advisorperspectives.com/dshort/updates/2026/07/20/margin-debt-finra-june-2026"
+      "headline": "Hurricane Melissa recovery: aid groups still treating Jamaica's hardest-hit communities",
+      "why": "Months after the strongest storm ever to hit Jamaica, medical teams are still addressing infection and trauma on the ground.",
+      "url": "https://www.directrelief.org/2026/03/after-hurricane-melissa-providers-treat-infection-and-trauma-in-jamaicas-hard-hit-communities/"
+    },
+    {
+      "headline": "US measles outbreaks put the country's 2026 elimination status at risk",
+      "why": "Over 2,300 cases and 37 outbreaks this year, driven largely by falling vaccination rates, could end 26 years of elimination status.",
+      "url": "https://www.cidrap.umn.edu/measles/us-highly-likely-lose-measles-elimination-status-fall-analysis-warns"
+    },
+    {
+      "headline": "Physicists shatter the quantum entanglement distance record with 420km of fiber",
+      "why": "More than four times the previous record — a real step toward a practical quantum internet.",
+      "url": "https://www.sciencealert.com/physicists-shatter-quantum-entanglement-distance-record-with-420-kilometers-of-optical-fiber"
+    },
+    {
+      "headline": "A compressorless hydrogen turbine breaks NASA's runtime record, turning detonation waves into electricity",
+      "why": "Skipping the mechanical compressor that normally eats half a turbine's output could unlock much more efficient clean power.",
+      "url": "https://www.sciencedaily.com/releases/2026/08/260803080919.htm"
+    }
+  ],
+  "businessFinance": [
+    {
+      "headline": "Palantir stock jumps 29% after an \"otherworldly\" AI-driven quarter",
+      "why": "US commercial revenue grew 149% year-over-year and full-year guidance was raised to $8.16B, underscoring AI-sovereignty demand.",
+      "url": "https://www.cnbc.com/2026/08/04/palantir-2q-earnings-ai-sovereign-tools.html"
+    },
+    {
+      "headline": "Musk says SpaceX will build exclusively on Nvidia's next-gen Vera Rubin chips",
+      "why": "A major vote of confidence for Nvidia's orbital AI data-center ambitions, sending its shares higher.",
+      "url": "https://www.benzinga.com/trading-ideas/movers/26/08/60935776/musk-praises-vera-rubin-platform-on-spacex-earnings-call-nvidia-stock-climbs"
+    },
+    {
+      "headline": "SpaceX's first earnings report as a public company: AI infrastructure costs outweigh the revenue beat",
+      "why": "A reminder that even strong top-line growth can be overshadowed by the capital intensity of AI buildouts.",
+      "url": "https://www.cnbc.com/2026/08/04/spacex-spcx-earnings-live-updates-q2-2026.html"
     },
     {
       "headline": "Wall Street closes at record highs as the AI-driven rally broadens",
-      "why": "The Dow, S&P 500, and Nasdaq all posted record closes, with over 84% of reporting S&P 500 companies beating earnings estimates — a sign of broad-based, not just AI-sector, strength.",
+      "why": "The Dow, S&P 500, and Nasdaq all posted record closes on strong breadth, not just AI-sector strength.",
       "url": "https://www.bloomberg.com/news/articles/2026-08-04/stock-market-today-dow-s-p-live-updates"
     },
     {
+      "headline": "Over 84% of reporting S&P 500 companies have beaten earnings expectations this season",
+      "why": "A strong earnings season is a key pillar supporting record index levels heading into autumn.",
+      "url": "https://www.thestreet.com/stock-market-today/stock-market-today-dow-jones-sp-500-nasdaq-updates-aug-4-2026"
+    },
+    {
       "headline": "Kospi and Nikkei surge as the AI/semiconductor rally spreads across Asia",
-      "why": "South Korea's Kospi jumped over 4.5% and Japan's Nikkei gained more than 2.6%, showing the AI infrastructure boom is a global market driver, not a US-only phenomenon.",
+      "why": "South Korea's Kospi jumped over 4.5% and Japan's Nikkei gained more than 2.6%, showing the AI infrastructure boom is a global driver.",
       "url": "https://www.bloomberg.com/news/articles/2026-07-31/asian-stocks-post-biggest-gain-in-four-months-on-ai-optimism"
     },
     {
-      "headline": "Rwanda's drone healthcare program gets a US grant even as other US aid is cut",
-      "why": "The Trump administration is funding Zipline's medical-drone deliveries while simultaneously cutting ~$200M in broader aid to Rwanda — illustrating a shift toward tech-vendor-led foreign assistance.",
-      "url": "https://www.npr.org/2026/08/04/g-s1-136906/drones-healthcare-trump-administration-rwanda"
+      "headline": "US margin debt hits a fresh record high",
+      "why": "Investor borrowing is growing far faster than the market itself — a leverage pattern that has preceded past downturns.",
+      "url": "https://www.advisorperspectives.com/dshort/updates/2026/07/20/margin-debt-finra-june-2026"
+    },
+    {
+      "headline": "Goldman Sachs deepens its bet on \"Y'all Street\" with a $700M Dallas campus",
+      "why": "Reflects a broader migration of financial-sector jobs from high-cost hubs like New York toward lower-cost cities.",
+      "url": "https://www.npr.org/2026/08/04/nx-s1-5697067/texas-banking-goldman-sachs-wall-street"
+    },
+    {
+      "headline": "A divided Fed holds interest rates steady amid elevated inflation",
+      "why": "Three regional presidents dissented — a rare three-way split that signals real disagreement over the inflation/growth tradeoff.",
+      "url": "https://www.cnbc.com/2026/07/29/fed-rate-decision-july-2026.html"
+    },
+    {
+      "headline": "June 2026 CPI: US inflation cools to 3.5%, core reading beats forecasts",
+      "why": "A sharp drop in energy costs drove the biggest monthly CPI decline since May 2020, beating economist expectations.",
+      "url": "https://www.cnbc.com/2026/07/14/consumer-price-index-inflation-report-june-2026.html"
+    },
+    {
+      "headline": "Bitcoin steadies near $64,000 despite an ongoing Coldcard hardware-wallet hack",
+      "why": "Over $100M was stolen from supposedly offline wallets, yet crypto sentiment held up on broader Hormuz de-escalation hopes.",
+      "url": "https://www.fool.com/coverage/stock-market-today/2026/08/04/crypto-market-today-aug-4-bitcoin-steadies-near-usd64-000-despite-ongoing-coldcard-hack/"
+    },
+    {
+      "headline": "Fox to buy Roku for $22 billion in a streaming mega-deal",
+      "why": "Combines Fox's news/sports networks and Tubi with Roku's device platform, creating the third-largest player in US TV viewing share.",
+      "url": "https://www.cnbc.com/2026/06/15/fox-to-buy-roku.html"
+    },
+    {
+      "headline": "Oil prices rise after the US blocks a surprise attack from Iran",
+      "why": "Brent and WTI both climbed as diplomatic uncertainty over Hormuz kept supply-risk premiums elevated.",
+      "url": "https://www.cnbc.com/2026/07/28/oil-price-today-wti-brent-us-iran-hormuz.html"
+    },
+    {
+      "headline": "Quantinuum's $1.68B Nasdaq debut is one of quantum computing's biggest IPOs yet",
+      "why": "Honeywell's quantum subsidiary priced above range and was 20x oversubscribed, signaling strong institutional appetite for quantum-computing exposure.",
+      "url": "https://www.cnbc.com/2026/06/04/quantinuum-qnt-stock-first-trade-ipo.html"
+    },
+    {
+      "headline": "OPEC+ approves a further oil output increase as Hormuz exports start to recover",
+      "why": "Seven members are adding 188,000 bpd for August, betting that shipping through the Strait keeps normalizing.",
+      "url": "https://www.cnbc.com/2026/07/05/opec-set-to-approve-another-oil-output-increase.html"
     }
   ],
   "aiSales": [
     {
       "headline": "Conversation intelligence is moving from post-call review to real-time in-call guidance",
-      "takeaway": "Tools like Gong and Chorus now claim ~84% predictive accuracy for deal outcomes. Consider piloting live call guidance on your highest-value deals to catch risk signals before they cost the deal, not after.",
+      "takeaway": "Tools like Gong and Chorus now claim ~84% predictive accuracy for deal outcomes. Pilot live call guidance on your highest-value deals to catch risk signals before they cost the deal, not after.",
       "url": "https://www.coachpilot.com/blog/conversation-intelligence-software-guide-2026"
     },
     {
       "headline": "Standalone conversation-intelligence tools are merging into unified enablement platforms",
-      "takeaway": "Buyers increasingly want one system instead of stitched-together point solutions. When evaluating vendors, weigh their consolidation roadmap — a unified platform can cut tool sprawl and boost rep adoption.",
+      "takeaway": "Buyers increasingly want one system instead of stitched-together point solutions. Weigh vendors' consolidation roadmaps to avoid tool sprawl and boost rep adoption.",
       "url": "https://www.showpad.com/blog/ai-sales-enablement-platforms-2026-buyers-guide"
     },
     {
       "headline": "AI roleplay and skill-practice tools are going mainstream",
-      "takeaway": "Platforms like Hyperbound and Second Nature let reps rehearse pitches against an AI buyer. Use this for onboarding and new-messaging rollouts so reps get repetitions before live calls, cutting ramp time.",
+      "takeaway": "Platforms like Hyperbound and Second Nature let reps rehearse pitches against an AI buyer. Use this for onboarding and new-messaging rollouts to cut ramp time.",
       "url": "https://www.hyperbound.ai/blog/ai-sales-coach-platforms-2026"
     },
     {
       "headline": "AI enablement is shifting from 'recommend' to 'execute'",
-      "takeaway": "Leading platforms now auto-update CRM records and draft follow-ups instead of just suggesting them. Audit your stack for rote admin work AI could take over, freeing your time for coaching design instead of busywork support.",
+      "takeaway": "Leading platforms now auto-update CRM records and draft follow-ups instead of just suggesting them. Audit your stack for rote admin work AI could take over.",
       "url": "https://iternal.ai/ai-sales-enablement-guide"
     },
     {
       "headline": "Half of sales professionals say AI now enables scale that wasn't possible before",
-      "takeaway": "A useful data point for building the internal business case for enablement AI budget — pair it with a concrete pilot result from your own team for maximum impact.",
+      "takeaway": "A useful data point for building the internal business case for enablement AI budget — pair it with a pilot result from your own team.",
       "url": "https://blog.hubspot.com/sales/ai-b2b-sales"
+    },
+    {
+      "headline": "Salesforce's Agentforce hits $1.4B ARR as 87% of sales teams now use AI for prospecting and forecasting",
+      "takeaway": "Adoption at this scale means AI-agent fluency is becoming table stakes — prioritize agent-workflow training in your next enablement cycle, not just tool training.",
+      "url": "https://futurumgroup.com/insights/salesforce-q3-fy-2026-ai-agents-data-360-lift-bookings-and-fy26-outlook/"
+    },
+    {
+      "headline": "Salesforce's Summer '26 release adds multi-agent orchestration and Slack-first workflows for sales",
+      "takeaway": "If your CRM is Salesforce, evaluate multi-agent orchestration now — it changes how reps hand off tasks between AI agents and could reshape your playbooks.",
+      "url": "https://www.salesforce.com/news/stories/summer-2026-product-release-announcement/"
+    },
+    {
+      "headline": "Microsoft 365 Copilot for Sales adds autonomous end-to-end selling agents",
+      "takeaway": "For Microsoft-stack teams, this is a chance to pilot agents that complete whole sub-processes (like meeting prep) rather than single tasks — measure time saved per rep.",
+      "url": "https://learn.microsoft.com/en-us/copilot/release-plan/2026wave1/copilot-sales/planned-features"
+    },
+    {
+      "headline": "HubSpot's Prospecting Agent charges per qualified lead instead of per seat",
+      "takeaway": "Outcome-based AI pricing is emerging as an alternative to seat licenses — worth factoring into your next enablement-tool budget conversation.",
+      "url": "https://www.hubspot.com/company-news/spring-2026-spotlight"
+    },
+    {
+      "headline": "HubSpot launches Agent Hub to tame \"AI agent sprawl\" across sales, marketing, and service",
+      "takeaway": "If your team has accumulated multiple disconnected AI tools, a unifying console/ownership model like this is worth benchmarking against your own sprawl.",
+      "url": "https://www.cxtoday.com/ai-automation-in-cx/hubspot-takes-aim-at-ai-agent-sprawl/"
+    },
+    {
+      "headline": "Mature AI-driven sales enablement programs report roughly 4:1 ROI",
+      "takeaway": "Use this benchmark to set realistic ROI expectations when pitching new enablement AI investment to leadership.",
+      "url": "https://www.cirrusinsight.com/blog/sales-enablement-statistics"
+    },
+    {
+      "headline": "LinkedIn Sales Navigator's new Conversational AI Search replaces manual filter-clicking",
+      "takeaway": "Describing an ideal prospect in plain English instead of stacking filters can meaningfully cut prospecting research time — worth a team training refresh.",
+      "url": "https://www.getcleed.com/blog/linkedin-sales-navigator-2026-features"
+    },
+    {
+      "headline": "LinkedIn's AI Sales Assistant combines intent detection with account intelligence",
+      "takeaway": "Early buying-intent signals (profile visits, post engagement) can feed directly into your outreach cadences — a good input for account-scoring rules.",
+      "url": "https://www.linkedotter.com/articles/linkedin-ai-sales-assistant-navigator-june-2026"
+    },
+    {
+      "headline": "Outreach pivots to an \"Agentic AI\" positioning, partnering with Salesforce AgentExchange",
+      "takeaway": "Sales-engagement platforms are converging with CRM-native AI agents — check whether your engagement tool's roadmap still fits your CRM strategy.",
+      "url": "https://industry-lens.com/compare/outreach-vs-salesloft"
+    },
+    {
+      "headline": "Salesloft's Rhythm AI automates workflow triggers and CRM updates based on buyer behavior",
+      "takeaway": "Behavior-triggered automation (routing hot accounts, auto-updating fields) is a good candidate for reclaiming rep time from CRM hygiene work.",
+      "url": "https://www.sybill.ai/blogs/salesloft-vs-outreach"
     }
   ]
 }

@@ -10,37 +10,74 @@
   <header class="page-header">
     <h1>Daily Summary</h1>
     <p id="today-date" class="subtitle"></p>
-    <p id="sofia-clock" class="clock"></p>
   </header>
 
-  <main class="grid">
-    <section class="card" id="weather-card">
+  <section class="top-row">
+    <div class="widget clock-widget">
+      <h2>Local Time</h2>
+      <div class="analog-clock">
+        <svg id="analog-clock-svg" viewBox="0 0 200 200" width="150" height="150">
+          <circle class="clock-face" cx="100" cy="100" r="96"></circle>
+          <g id="clock-ticks"></g>
+          <line id="hour-hand" class="clock-hand hour-hand" x1="100" y1="100" x2="100" y2="58"></line>
+          <line id="minute-hand" class="clock-hand minute-hand" x1="100" y1="100" x2="100" y2="34"></line>
+          <line id="second-hand" class="clock-hand second-hand" x1="100" y1="100" x2="100" y2="26"></line>
+          <circle class="clock-center" cx="100" cy="100" r="4"></circle>
+        </svg>
+      </div>
+      <p id="sofia-clock-digital" class="clock-digital"></p>
+    </div>
+
+    <div class="widget calendar-widget">
+      <h2 id="calendar-title">Calendar</h2>
+      <div class="calendar-weekdays" id="calendar-weekdays"></div>
+      <div class="calendar-grid" id="calendar-grid"></div>
+    </div>
+
+    <div class="widget weather-widget">
       <h2>Weather &mdash; Sofia, Bulgaria</h2>
       <div class="card-body" id="weather-body">
         <p class="loading">Loading weather&hellip;</p>
       </div>
-    </section>
+    </div>
+  </section>
 
+  <main class="news-grid">
     <section class="card" id="sports-card">
-      <h2>Sport World News</h2>
+      <h2>Sport News</h2>
       <div class="card-body" id="sports-body">
-        <p class="loading">Loading sports headlines&hellip;</p>
+        <p class="loading">Loading headlines&hellip;</p>
       </div>
     </section>
 
-    <section class="card wide" id="worldnews-card">
-      <h2>World News &amp; Finance Digest</h2>
+    <section class="card" id="worldnews-card">
+      <h2>World News</h2>
       <p class="card-meta" id="worldnews-meta"></p>
       <div class="card-body" id="worldnews-body">
         <p class="loading">Loading digest&hellip;</p>
       </div>
     </section>
 
-    <section class="card wide" id="aisales-card">
+    <section class="card" id="businessfinance-card">
+      <h2>Business &amp; Finance</h2>
+      <p class="card-meta" id="businessfinance-meta"></p>
+      <div class="card-body" id="businessfinance-body">
+        <p class="loading">Loading digest&hellip;</p>
+      </div>
+    </section>
+
+    <section class="card" id="aisales-card">
       <h2>AI for Sales Enablement</h2>
       <p class="card-meta" id="aisales-meta"></p>
       <div class="card-body" id="aisales-body">
         <p class="loading">Loading digest&hellip;</p>
+      </div>
+    </section>
+
+    <section class="card placeholder-card" id="empty-card">
+      <h2>More Coming Soon</h2>
+      <div class="card-body">
+        <p class="placeholder-text">This spot is reserved for a future section.</p>
       </div>
     </section>
   </main>

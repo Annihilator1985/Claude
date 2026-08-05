@@ -24,21 +24,112 @@ function setDateHeading() {
   });
 }
 
+function sofiaTimeParts(date) {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Europe/Sofia",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  }).formatToParts(date);
+  const get = (type) => Number(parts.find((p) => p.type === type)?.value ?? 0);
+  return { hour: get("hour") % 24, minute: get("minute"), second: get("second") };
+}
+
+function buildClockTicks() {
+  const group = document.getElementById("clock-ticks");
+  if (!group) return;
+  const ns = "http://www.w3.org/2000/svg";
+  for (let i = 0; i < 12; i++) {
+    const angle = (i * 30 * Math.PI) / 180;
+    const outer = 90;
+    const inner = i % 3 === 0 ? 78 : 84;
+    const x1 = 100 + outer * Math.sin(angle);
+    const y1 = 100 - outer * Math.cos(angle);
+    const x2 = 100 + inner * Math.sin(angle);
+    const y2 = 100 - inner * Math.cos(angle);
+    const line = document.createElementNS(ns, "line");
+    line.setAttribute("x1", x1.toFixed(1));
+    line.setAttribute("y1", y1.toFixed(1));
+    line.setAttribute("x2", x2.toFixed(1));
+    line.setAttribute("y2", y2.toFixed(1));
+    line.setAttribute("class", "clock-tick");
+    group.appendChild(line);
+  }
+}
+
 function startClock() {
-  const el = document.getElementById("sofia-clock");
-  if (!el) return;
-  const formatter = new Intl.DateTimeFormat(undefined, {
+  const hourHand = document.getElementById("hour-hand");
+  const minuteHand = document.getElementById("minute-hand");
+  const secondHand = document.getElementById("second-hand");
+  const digital = document.getElementById("sofia-clock-digital");
+  if (!hourHand || !minuteHand || !secondHand) return;
+
+  buildClockTicks();
+
+  const digitalFormatter = new Intl.DateTimeFormat(undefined, {
     timeZone: "Europe/Sofia",
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
     hour12: false,
   });
+
   const tick = () => {
-    el.textContent = `${formatter.format(new Date())} Sofia time`;
+    const now = new Date();
+    const { hour, minute, second } = sofiaTimeParts(now);
+    const hourDeg = ((hour % 12) + minute / 60) * 30;
+    const minuteDeg = (minute + second / 60) * 6;
+    const secondDeg = second * 6;
+
+    hourHand.setAttribute("transform", `rotate(${hourDeg} 100 100)`);
+    minuteHand.setAttribute("transform", `rotate(${minuteDeg} 100 100)`);
+    secondHand.setAttribute("transform", `rotate(${secondDeg} 100 100)`);
+
+    if (digital) digital.textContent = `${digitalFormatter.format(now)} Sofia time`;
   };
   tick();
   setInterval(tick, 1000);
+}
+
+function buildCalendar() {
+  const title = document.getElementById("calendar-title");
+  const weekdaysEl = document.getElementById("calendar-weekdays");
+  const gridEl = document.getElementById("calendar-grid");
+  if (!title || !weekdaysEl || !gridEl) return;
+
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Europe/Sofia",
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+  }).formatToParts(new Date());
+  const get = (type) => Number(parts.find((p) => p.type === type)?.value ?? 0);
+  const year = get("year");
+  const month = get("month") - 1;
+  const today = get("day");
+
+  title.textContent = new Date(year, month, 1).toLocaleDateString(undefined, {
+    month: "long",
+    year: "numeric",
+  });
+
+  const weekdayNames = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+  weekdaysEl.innerHTML = weekdayNames.map((d) => `<div>${d}</div>`).join("");
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const leadingBlanks = (firstDay + 6) % 7;
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  let cellsHtml = "";
+  for (let i = 0; i < leadingBlanks; i++) {
+    cellsHtml += `<div class="calendar-day empty"></div>`;
+  }
+  for (let day = 1; day <= daysInMonth; day++) {
+    const isToday = day === today;
+    cellsHtml += `<div class="calendar-day${isToday ? " today" : ""}">${day}</div>`;
+  }
+  gridEl.innerHTML = cellsHtml;
 }
 
 async function loadWeather() {
@@ -106,7 +197,7 @@ async function loadSports() {
       const text = await fetchTextWithTimeout(proxyUrl);
       const xml = new DOMParser().parseFromString(text, "text/xml");
       if (xml.querySelector("parsererror")) throw new Error("Malformed feed response");
-      const items = Array.from(xml.querySelectorAll("item")).slice(0, 8);
+      const items = Array.from(xml.querySelectorAll("item")).slice(0, 15);
       if (!items.length) throw new Error("No headlines found");
 
       const listHtml = items
@@ -133,48 +224,48 @@ function formatGeneratedAt(iso) {
   return `Updated ${d.toLocaleDateString(undefined, { month: "short", day: "numeric" })} · ${d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}`;
 }
 
+function renderDigestList(items, noteField) {
+  return `<ul class="bullet-list">${(items || [])
+    .map(
+      (item) => `<li>
+        <div class="bullet-headline">${item.headline}</div>
+        <div class="bullet-note">${item[noteField]}</div>
+        ${item.url ? `<a class="bullet-link" href="${item.url}" target="_blank" rel="noopener">Read full article &rarr;</a>` : ""}
+      </li>`
+    )
+    .join("")}</ul>`;
+}
+
 async function loadDigest() {
-  const worldBody = document.getElementById("worldnews-body");
-  const worldMeta = document.getElementById("worldnews-meta");
-  const aiBody = document.getElementById("aisales-body");
-  const aiMeta = document.getElementById("aisales-meta");
+  const sections = [
+    { body: "worldnews-body", meta: "worldnews-meta", field: "worldNews", note: "why" },
+    { body: "businessfinance-body", meta: "businessfinance-meta", field: "businessFinance", note: "why" },
+    { body: "aisales-body", meta: "aisales-meta", field: "aiSales", note: "takeaway" },
+  ];
 
   try {
     const res = await fetch(`data/digest.json?_=${Date.now()}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
 
-    worldMeta.textContent = formatGeneratedAt(data.generatedAt);
-    aiMeta.textContent = formatGeneratedAt(data.generatedAt);
-
-    worldBody.innerHTML = `<ul class="bullet-list">${(data.worldNews || [])
-      .map(
-        (item) => `<li>
-          <div class="bullet-headline">${item.headline}</div>
-          <div class="bullet-note">${item.why}</div>
-          ${item.url ? `<a class="bullet-link" href="${item.url}" target="_blank" rel="noopener">Read full article &rarr;</a>` : ""}
-        </li>`
-      )
-      .join("")}</ul>`;
-
-    aiBody.innerHTML = `<ul class="bullet-list">${(data.aiSales || [])
-      .map(
-        (item) => `<li>
-          <div class="bullet-headline">${item.headline}</div>
-          <div class="bullet-note">${item.takeaway}</div>
-          ${item.url ? `<a class="bullet-link" href="${item.url}" target="_blank" rel="noopener">Read full article &rarr;</a>` : ""}
-        </li>`
-      )
-      .join("")}</ul>`;
+    for (const section of sections) {
+      const bodyEl = document.getElementById(section.body);
+      const metaEl = document.getElementById(section.meta);
+      if (metaEl) metaEl.textContent = formatGeneratedAt(data.generatedAt);
+      if (bodyEl) bodyEl.innerHTML = renderDigestList(data[section.field], section.note);
+    }
   } catch (err) {
     const msg = `<p class="error">Couldn't load today's digest (${err.message}).</p>`;
-    worldBody.innerHTML = msg;
-    aiBody.innerHTML = msg;
+    for (const section of sections) {
+      const bodyEl = document.getElementById(section.body);
+      if (bodyEl) bodyEl.innerHTML = msg;
+    }
   }
 }
 
 setDateHeading();
 startClock();
+buildCalendar();
 loadWeather();
 loadSports();
 loadDigest();
