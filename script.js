@@ -229,9 +229,37 @@ async function fetchTextWithTimeout(url, timeoutMs = 8000) {
   }
 }
 
-async function loadSports() {
-  const body = document.getElementById("sports-body");
-  const feedUrl = "https://feeds.bbci.co.uk/sport/rss.xml";
+function firstImgSrc(html) {
+  const match = /<img[^>]+src=["']([^"']+)["']/i.exec(html || "");
+  return match ? match[1] : "";
+}
+
+function extractRssArticle(item) {
+  const title = item.querySelector("title")?.textContent ?? "Untitled";
+  const link = item.querySelector("link")?.textContent ?? "#";
+  const rawDescription = item.querySelector("description")?.textContent ?? "";
+  const contentEncoded = item.getElementsByTagName("content:encoded")[0]?.textContent ?? "";
+  const description = stripHtml(rawDescription) || stripHtml(contentEncoded);
+
+  const thumbnail =
+    item.getElementsByTagName("media:thumbnail")[0]?.getAttribute("url") ||
+    item.getElementsByTagName("media:content")[0]?.getAttribute("url") ||
+    item.querySelector("enclosure[type^='image']")?.getAttribute("url") ||
+    firstImgSrc(contentEncoded) ||
+    firstImgSrc(rawDescription) ||
+    "";
+
+  return { headline: title, note: description.slice(0, 240), url: link, image: thumbnail };
+}
+
+const FEEDS = {
+  sports: "https://feeds.bbci.co.uk/sport/rss.xml",
+  world: "https://feeds.bbci.co.uk/news/world/rss.xml",
+  finance: "https://feeds.bbci.co.uk/news/business/rss.xml",
+  ai: "https://martech.org/feed/",
+};
+
+async function fetchFeedArticles(feedUrl, limit = 15) {
   const proxyUrls = [
     `https://api.allorigins.win/raw?url=${encodeURIComponent(feedUrl)}`,
     `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(feedUrl)}`,
@@ -244,72 +272,73 @@ async function loadSports() {
       const text = await fetchTextWithTimeout(proxyUrl);
       const xml = new DOMParser().parseFromString(text, "text/xml");
       if (xml.querySelector("parsererror")) throw new Error("Malformed feed response");
-      const items = Array.from(xml.querySelectorAll("item")).slice(0, 15);
+      const items = Array.from(xml.querySelectorAll("item")).slice(0, limit);
       if (!items.length) throw new Error("No headlines found");
-
-      const articles = items.map((item) => {
-        const title = item.querySelector("title")?.textContent ?? "Untitled";
-        const link = item.querySelector("link")?.textContent ?? "#";
-        const description = stripHtml(item.querySelector("description")?.textContent ?? "");
-        const thumbnail =
-          item.getElementsByTagName("media:thumbnail")[0]?.getAttribute("url") ||
-          item.querySelector("enclosure[type^='image']")?.getAttribute("url") ||
-          "";
-        return { headline: title, note: description, url: link, image: thumbnail };
-      });
-
-      body.innerHTML = renderArticleList(articles, "sports");
-      return;
+      return items.map(extractRssArticle);
     } catch (err) {
       lastError = err;
     }
   }
-
-  body.innerHTML = `<p class="error">Couldn't load sports headlines right now (${lastError?.message ?? "unknown error"}). Try refreshing in a bit.</p>`;
+  throw lastError ?? new Error("Feed unavailable");
 }
 
-function formatGeneratedAt(iso) {
-  if (!iso) return "";
-  const d = new Date(iso);
-  return `Updated ${d.toLocaleDateString(undefined, { month: "short", day: "numeric" })} · ${d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}`;
+async function loadDigestFallback(field, noteField) {
+  const res = await fetch(`data/digest.json?_=${Date.now()}`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const data = await res.json();
+  return (data[field] || []).map((item) => ({
+    headline: item.headline,
+    note: item[noteField],
+    url: item.url,
+    image: item.image,
+  }));
 }
 
-async function loadDigest() {
-  const sections = [
-    { body: "worldnews-body", meta: "worldnews-meta", field: "worldNews", note: "why", category: "world" },
-    { body: "businessfinance-body", meta: "businessfinance-meta", field: "businessFinance", note: "why", category: "finance" },
-    { body: "aisales-body", meta: "aisales-meta", field: "aiSales", note: "takeaway", category: "ai" },
-  ];
-
+async function loadFeedSection({ bodyId, feedUrl, category, fallback }) {
+  const body = document.getElementById(bodyId);
+  if (!body) return;
   try {
-    const res = await fetch(`data/digest.json?_=${Date.now()}`);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-
-    for (const section of sections) {
-      const bodyEl = document.getElementById(section.body);
-      const metaEl = document.getElementById(section.meta);
-      if (metaEl) metaEl.textContent = formatGeneratedAt(data.generatedAt);
-      const articles = (data[section.field] || []).map((item) => ({
-        headline: item.headline,
-        note: item[section.note],
-        url: item.url,
-        image: item.image,
-      }));
-      if (bodyEl) bodyEl.innerHTML = renderArticleList(articles, section.category);
-    }
+    const articles = await fetchFeedArticles(feedUrl);
+    body.innerHTML = renderArticleList(articles, category);
   } catch (err) {
-    const msg = `<p class="error">Couldn't load today's digest (${err.message}).</p>`;
-    for (const section of sections) {
-      const bodyEl = document.getElementById(section.body);
-      if (bodyEl) bodyEl.innerHTML = msg;
+    if (fallback) {
+      try {
+        const articles = await fallback();
+        body.innerHTML = renderArticleList(articles, category);
+        return;
+      } catch (fallbackErr) {
+        body.innerHTML = `<p class="error">Couldn't load headlines right now (${fallbackErr.message}). Try refreshing in a bit.</p>`;
+        return;
+      }
     }
+    body.innerHTML = `<p class="error">Couldn't load headlines right now (${err.message}). Try refreshing in a bit.</p>`;
   }
+}
+
+function loadAllFeeds() {
+  loadFeedSection({ bodyId: "sports-body", feedUrl: FEEDS.sports, category: "sports" });
+  loadFeedSection({
+    bodyId: "worldnews-body",
+    feedUrl: FEEDS.world,
+    category: "world",
+    fallback: () => loadDigestFallback("worldNews", "why"),
+  });
+  loadFeedSection({
+    bodyId: "businessfinance-body",
+    feedUrl: FEEDS.finance,
+    category: "finance",
+    fallback: () => loadDigestFallback("businessFinance", "why"),
+  });
+  loadFeedSection({
+    bodyId: "aisales-body",
+    feedUrl: FEEDS.ai,
+    category: "ai",
+    fallback: () => loadDigestFallback("aiSales", "takeaway"),
+  });
 }
 
 setDateHeading();
 startClock();
 buildCalendar();
 loadWeather();
-loadSports();
-loadDigest();
+loadAllFeeds();
