@@ -170,25 +170,45 @@ async function loadWeather() {
   }
 }
 
-function previewImageUrl(articleUrl) {
-  return `https://api.microlink.io/?url=${encodeURIComponent(articleUrl)}&meta=false&embed=image.url`;
-}
-
 function stripHtml(html) {
   const div = document.createElement("div");
   div.innerHTML = html || "";
   return (div.textContent || "").trim();
 }
 
-function renderArticleList(items) {
+const CATEGORY_ICONS = {
+  sports: '<circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>',
+  world: '<circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>',
+  finance: '<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline>',
+  ai: '<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>',
+};
+
+function hashHue(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash * 31 + str.charCodeAt(i)) % 360;
+  }
+  return hash;
+}
+
+function categoryThumb(category, seedText, hidden) {
+  const hue = hashHue(seedText || category);
+  const icon = CATEGORY_ICONS[category] || CATEGORY_ICONS.world;
+  const style = `background: linear-gradient(135deg, hsl(${hue} 55% 42%), hsl(${(hue + 40) % 360} 55% 30%));${hidden ? " display: none;" : ""}`;
+  return `<div class="bullet-thumb placeholder" style="${style}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${icon}</svg>
+  </div>`;
+}
+
+function renderArticleList(items, category) {
   return `<ul class="bullet-list">${(items || [])
     .map((item) => {
-      const imgSrc = item.image || (item.url ? previewImageUrl(item.url) : "");
-      const img = imgSrc
-        ? `<img class="bullet-thumb" src="${imgSrc}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`
-        : "";
+      const thumb = item.image
+        ? `<img class="bullet-thumb" src="${item.image}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+           ${categoryThumb(category, item.headline, true)}`
+        : categoryThumb(category, item.headline, false);
       return `<li>
-        ${img}
+        ${thumb}
         <div class="bullet-headline">${item.headline}</div>
         <div class="bullet-note">${item.note ?? ""}</div>
         ${item.url ? `<a class="bullet-link" href="${item.url}" target="_blank" rel="noopener">Read full article &rarr;</a>` : ""}
@@ -238,7 +258,7 @@ async function loadSports() {
         return { headline: title, note: description, url: link, image: thumbnail };
       });
 
-      body.innerHTML = renderArticleList(articles);
+      body.innerHTML = renderArticleList(articles, "sports");
       return;
     } catch (err) {
       lastError = err;
@@ -256,9 +276,9 @@ function formatGeneratedAt(iso) {
 
 async function loadDigest() {
   const sections = [
-    { body: "worldnews-body", meta: "worldnews-meta", field: "worldNews", note: "why" },
-    { body: "businessfinance-body", meta: "businessfinance-meta", field: "businessFinance", note: "why" },
-    { body: "aisales-body", meta: "aisales-meta", field: "aiSales", note: "takeaway" },
+    { body: "worldnews-body", meta: "worldnews-meta", field: "worldNews", note: "why", category: "world" },
+    { body: "businessfinance-body", meta: "businessfinance-meta", field: "businessFinance", note: "why", category: "finance" },
+    { body: "aisales-body", meta: "aisales-meta", field: "aiSales", note: "takeaway", category: "ai" },
   ];
 
   try {
@@ -276,7 +296,7 @@ async function loadDigest() {
         url: item.url,
         image: item.image,
       }));
-      if (bodyEl) bodyEl.innerHTML = renderArticleList(articles);
+      if (bodyEl) bodyEl.innerHTML = renderArticleList(articles, section.category);
     }
   } catch (err) {
     const msg = `<p class="error">Couldn't load today's digest (${err.message}).</p>`;
