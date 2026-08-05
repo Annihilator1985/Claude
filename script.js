@@ -24,6 +24,23 @@ function setDateHeading() {
   });
 }
 
+function startClock() {
+  const el = document.getElementById("sofia-clock");
+  if (!el) return;
+  const formatter = new Intl.DateTimeFormat(undefined, {
+    timeZone: "Europe/Sofia",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
+  const tick = () => {
+    el.textContent = `${formatter.format(new Date())} Sofia time`;
+  };
+  tick();
+  setInterval(tick, 1000);
+}
+
 async function loadWeather() {
   const body = document.getElementById("weather-body");
   try {
@@ -113,6 +130,7 @@ async function loadDigest() {
         (item) => `<li>
           <div class="bullet-headline">${item.headline}</div>
           <div class="bullet-note">${item.why}</div>
+          ${item.url ? `<a class="bullet-link" href="${item.url}" target="_blank" rel="noopener">Read full article &rarr;</a>` : ""}
         </li>`
       )
       .join("")}</ul>`;
@@ -122,6 +140,7 @@ async function loadDigest() {
         (item) => `<li>
           <div class="bullet-headline">${item.headline}</div>
           <div class="bullet-note">${item.takeaway}</div>
+          ${item.url ? `<a class="bullet-link" href="${item.url}" target="_blank" rel="noopener">Read full article &rarr;</a>` : ""}
         </li>`
       )
       .join("")}</ul>`;
@@ -133,6 +152,7 @@ async function loadDigest() {
 }
 
 setDateHeading();
+startClock();
 loadWeather();
 loadSports();
 loadDigest();

@@ -1,55 +1,87 @@
 {
-  "generatedAt": "2026-08-05T04:00:00Z",
+  "generatedAt": "2026-08-05T07:30:00Z",
   "worldNews": [
     {
-      "headline": "US stocks close at record highs as AI-driven rally continues",
-      "why": "The Dow jumped over 900 points to 54,085.88 and the Nasdaq rose 2.59% to 26,584.99, led by AI and semiconductor names (Palantir +29%). Signals strong risk-on sentiment tied to AI capex and earnings."
+      "headline": "Palantir stock jumps 29% after an \"otherworldly\" AI-driven quarter",
+      "why": "US commercial revenue grew 149% year-over-year and the company raised full-year guidance to $8.16B, underscoring how strong AI-sovereignty demand is fueling the broader market rally.",
+      "url": "https://www.cnbc.com/2026/08/04/palantir-2q-earnings-ai-sovereign-tools.html"
     },
     {
-      "headline": "Asian markets rally in sympathy — Nikkei +3.3%, Kospi +4.4%, Taiex +3.1%",
-      "why": "Shows the AI-driven rally is global, not just a US story, with semiconductor and AI hardware names leading gains across Asia."
+      "headline": "Musk says SpaceX will build exclusively on Nvidia's next-gen Vera Rubin chips",
+      "why": "On SpaceX's first earnings call as a public company, Musk committed to Nvidia hardware for its orbital AI data centers — a major vote of confidence that sent Nvidia shares higher.",
+      "url": "https://www.cnbc.com/2026/08/04/spacex-spcx-earnings-live-updates-q2-2026.html"
     },
     {
-      "headline": "Hopes rise for a US-Iran deal to reopen the Strait of Hormuz",
-      "why": "Qatar has drafted a proposal and US Treasury Secretary Bessent suggested a deal could land this week. Brent crude fell 1.2% to $78.43/barrel on the news — a geopolitical de-escalation with direct market impact."
+      "headline": "Iran and Oman make progress on a deal to reopen the Strait of Hormuz",
+      "why": "A workable shipping-lane agreement could ease the Middle East crisis and oil-supply risk; Brent crude has already dipped on the news, with US officials suggesting a deal could land within days.",
+      "url": "https://www.pbs.org/newshour/world/iran-and-oman-make-progress-on-deal-to-reopen-strait-of-hormuz-officials-say"
     },
     {
-      "headline": "Margin debt hits an all-time high",
-      "why": "Elevated leverage in the system raises the risk of sharper swings if sentiment turns — worth watching as a fragility signal even amid record index highs."
+      "headline": "Fighting breaks out in western Tigray, threatening Ethiopia's peace deal",
+      "why": "The clashes are among the most serious breaches yet of the three-year-old ceasefire, raising the risk of a renewed large-scale conflict in the Horn of Africa.",
+      "url": "https://www.aljazeera.com/news/2026/8/1/fighting-breaks-out-in-western-tigray-as-ethiopia-and-tplf-trade-blame"
     },
     {
-      "headline": "Goldman Sachs expands its Dallas presence amid a Texas financial boom",
-      "why": "Local leaders are calling it \"Y'all Street\" — another sign that financial-sector activity is diversifying beyond traditional hubs like New York."
+      "headline": "Ukraine's Patriot interceptor shortage is leaving its skies exposed",
+      "why": "Production of PAC-3 missiles can't keep pace with consumption, and recent Russian strikes went entirely unintercepted — a critical capability gap with direct humanitarian stakes.",
+      "url": "https://www.bloomberg.com/news/articles/2026-07-07/ukraine-air-force-data-expose-shortfall-in-us-patriot-missiles"
     },
     {
-      "headline": "Wildfires displace nearly a quarter of Spokane, WA residents",
-      "why": "Hundreds of homes destroyed and a suspect arrested in one of three fires — a major domestic disaster with significant human and economic cost."
+      "headline": "Arson suspect arrested over deadly Spokane wildfires",
+      "why": "The fires destroyed hundreds of homes and displaced roughly 67,000 people — one of the largest US urban wildfire displacements in recent memory.",
+      "url": "https://www.cbsnews.com/news/spokane-washington-wildfires-homes-destroyed/"
     },
     {
-      "headline": "US grants fund medical drone delivery in Rwanda while cutting other aid",
-      "why": "Reflects a broader shift in US foreign-aid strategy toward targeted technology investment rather than broad-based assistance."
+      "headline": "Goldman Sachs deepens its bet on \"Y'all Street\" with a $700M Dallas campus",
+      "why": "The move reflects a broader migration of financial-sector jobs from high-cost hubs like New York toward lower-cost cities such as Dallas — a notable regional economic shift.",
+      "url": "https://www.npr.org/2026/08/04/nx-s1-5697067/texas-banking-goldman-sachs-wall-street"
+    },
+    {
+      "headline": "US margin debt hits a fresh record high",
+      "why": "Investor borrowing is growing far faster than the market itself — a leverage pattern that has preceded past downturns, even though it isn't a guaranteed crash signal.",
+      "url": "https://www.advisorperspectives.com/dshort/updates/2026/07/20/margin-debt-finra-june-2026"
+    },
+    {
+      "headline": "Wall Street closes at record highs as the AI-driven rally broadens",
+      "why": "The Dow, S&P 500, and Nasdaq all posted record closes, with over 84% of reporting S&P 500 companies beating earnings estimates — a sign of broad-based, not just AI-sector, strength.",
+      "url": "https://www.bloomberg.com/news/articles/2026-08-04/stock-market-today-dow-s-p-live-updates"
+    },
+    {
+      "headline": "Kospi and Nikkei surge as the AI/semiconductor rally spreads across Asia",
+      "why": "South Korea's Kospi jumped over 4.5% and Japan's Nikkei gained more than 2.6%, showing the AI infrastructure boom is a global market driver, not a US-only phenomenon.",
+      "url": "https://www.bloomberg.com/news/articles/2026-07-31/asian-stocks-post-biggest-gain-in-four-months-on-ai-optimism"
+    },
+    {
+      "headline": "Rwanda's drone healthcare program gets a US grant even as other US aid is cut",
+      "why": "The Trump administration is funding Zipline's medical-drone deliveries while simultaneously cutting ~$200M in broader aid to Rwanda — illustrating a shift toward tech-vendor-led foreign assistance.",
+      "url": "https://www.npr.org/2026/08/04/g-s1-136906/drones-healthcare-trump-administration-rwanda"
     }
   ],
   "aiSales": [
     {
-      "headline": "Conversation intelligence hits ~84% predictive accuracy for deal outcomes",
-      "takeaway": "Gong, Chorus, and Clari are moving from post-call analysis to real-time in-call guidance. Consider piloting live call guidance on your highest-value deals to catch risk signals before they cost the deal, not after."
+      "headline": "Conversation intelligence is moving from post-call review to real-time in-call guidance",
+      "takeaway": "Tools like Gong and Chorus now claim ~84% predictive accuracy for deal outcomes. Consider piloting live call guidance on your highest-value deals to catch risk signals before they cost the deal, not after.",
+      "url": "https://www.coachpilot.com/blog/conversation-intelligence-software-guide-2026"
     },
     {
-      "headline": "Standalone CI tools are merging into unified enablement platforms",
-      "takeaway": "Buyers increasingly want one system instead of stitched-together point solutions. When evaluating vendors, weigh their consolidation roadmap — a unified platform may cut tool sprawl and boost rep adoption."
+      "headline": "Standalone conversation-intelligence tools are merging into unified enablement platforms",
+      "takeaway": "Buyers increasingly want one system instead of stitched-together point solutions. When evaluating vendors, weigh their consolidation roadmap — a unified platform can cut tool sprawl and boost rep adoption.",
+      "url": "https://www.showpad.com/blog/ai-sales-enablement-platforms-2026-buyers-guide"
     },
     {
-      "headline": "AI roleplay and skill-practice tools are going mainstream (Hyperbound, Second Nature, Tough Tongue AI)",
-      "takeaway": "Use AI roleplay simulations for onboarding and new-messaging rollouts so reps get repetitions before live calls — a low-risk way to cut ramp time."
+      "headline": "AI roleplay and skill-practice tools are going mainstream",
+      "takeaway": "Platforms like Hyperbound and Second Nature let reps rehearse pitches against an AI buyer. Use this for onboarding and new-messaging rollouts so reps get repetitions before live calls, cutting ramp time.",
+      "url": "https://www.hyperbound.ai/blog/ai-sales-coach-platforms-2026"
     },
     {
-      "headline": "AI is shifting from 'recommend' to 'execute' — auto-updating CRM and drafting follow-ups",
-      "takeaway": "Audit your current stack for rote admin tasks (CRM logging, follow-up drafts) that AI could take over, freeing enablement time for coaching design instead of busywork support."
+      "headline": "AI enablement is shifting from 'recommend' to 'execute'",
+      "takeaway": "Leading platforms now auto-update CRM records and draft follow-ups instead of just suggesting them. Audit your stack for rote admin work AI could take over, freeing your time for coaching design instead of busywork support.",
+      "url": "https://iternal.ai/ai-sales-enablement-guide"
     },
     {
-      "headline": "50% of sales pros say AI enables scalability that wasn't possible before",
-      "takeaway": "A useful data point for building the internal business case for enablement AI budget — pair it with a concrete pilot result from your own team for maximum impact."
+      "headline": "Half of sales professionals say AI now enables scale that wasn't possible before",
+      "takeaway": "A useful data point for building the internal business case for enablement AI budget — pair it with a concrete pilot result from your own team for maximum impact.",
+      "url": "https://blog.hubspot.com/sales/ai-b2b-sales"
     }
   ]
 }
