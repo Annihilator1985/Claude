@@ -170,6 +170,33 @@ async function loadWeather() {
   }
 }
 
+function previewImageUrl(articleUrl) {
+  return `https://api.microlink.io/?url=${encodeURIComponent(articleUrl)}&meta=false&embed=image.url`;
+}
+
+function stripHtml(html) {
+  const div = document.createElement("div");
+  div.innerHTML = html || "";
+  return (div.textContent || "").trim();
+}
+
+function renderArticleList(items) {
+  return `<ul class="bullet-list">${(items || [])
+    .map((item) => {
+      const imgSrc = item.image || (item.url ? previewImageUrl(item.url) : "");
+      const img = imgSrc
+        ? `<img class="bullet-thumb" src="${imgSrc}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`
+        : "";
+      return `<li>
+        ${img}
+        <div class="bullet-headline">${item.headline}</div>
+        <div class="bullet-note">${item.note ?? ""}</div>
+        ${item.url ? `<a class="bullet-link" href="${item.url}" target="_blank" rel="noopener">Read full article &rarr;</a>` : ""}
+      </li>`;
+    })
+    .join("")}</ul>`;
+}
+
 async function fetchTextWithTimeout(url, timeoutMs = 8000) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -200,15 +227,18 @@ async function loadSports() {
       const items = Array.from(xml.querySelectorAll("item")).slice(0, 15);
       if (!items.length) throw new Error("No headlines found");
 
-      const listHtml = items
-        .map((item) => {
-          const title = item.querySelector("title")?.textContent ?? "Untitled";
-          const link = item.querySelector("link")?.textContent ?? "#";
-          return `<li><a href="${link}" target="_blank" rel="noopener">${title}</a></li>`;
-        })
-        .join("");
+      const articles = items.map((item) => {
+        const title = item.querySelector("title")?.textContent ?? "Untitled";
+        const link = item.querySelector("link")?.textContent ?? "#";
+        const description = stripHtml(item.querySelector("description")?.textContent ?? "");
+        const thumbnail =
+          item.getElementsByTagName("media:thumbnail")[0]?.getAttribute("url") ||
+          item.querySelector("enclosure[type^='image']")?.getAttribute("url") ||
+          "";
+        return { headline: title, note: description, url: link, image: thumbnail };
+      });
 
-      body.innerHTML = `<ul class="headline-list">${listHtml}</ul>`;
+      body.innerHTML = renderArticleList(articles);
       return;
     } catch (err) {
       lastError = err;
@@ -222,18 +252,6 @@ function formatGeneratedAt(iso) {
   if (!iso) return "";
   const d = new Date(iso);
   return `Updated ${d.toLocaleDateString(undefined, { month: "short", day: "numeric" })} · ${d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}`;
-}
-
-function renderDigestList(items, noteField) {
-  return `<ul class="bullet-list">${(items || [])
-    .map(
-      (item) => `<li>
-        <div class="bullet-headline">${item.headline}</div>
-        <div class="bullet-note">${item[noteField]}</div>
-        ${item.url ? `<a class="bullet-link" href="${item.url}" target="_blank" rel="noopener">Read full article &rarr;</a>` : ""}
-      </li>`
-    )
-    .join("")}</ul>`;
 }
 
 async function loadDigest() {
@@ -252,7 +270,13 @@ async function loadDigest() {
       const bodyEl = document.getElementById(section.body);
       const metaEl = document.getElementById(section.meta);
       if (metaEl) metaEl.textContent = formatGeneratedAt(data.generatedAt);
-      if (bodyEl) bodyEl.innerHTML = renderDigestList(data[section.field], section.note);
+      const articles = (data[section.field] || []).map((item) => ({
+        headline: item.headline,
+        note: item[section.note],
+        url: item.url,
+        image: item.image,
+      }));
+      if (bodyEl) bodyEl.innerHTML = renderArticleList(articles);
     }
   } catch (err) {
     const msg = `<p class="error">Couldn't load today's digest (${err.message}).</p>`;
