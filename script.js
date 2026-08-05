@@ -79,30 +79,52 @@ async function loadWeather() {
   }
 }
 
+async function fetchTextWithTimeout(url, timeoutMs = 8000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, { signal: controller.signal });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.text();
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 async function loadSports() {
   const body = document.getElementById("sports-body");
-  const feedUrl = "http://feeds.bbci.co.uk/sport/rss.xml";
-  const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(feedUrl)}`;
-  try {
-    const res = await fetch(proxyUrl);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const text = await res.text();
-    const xml = new DOMParser().parseFromString(text, "text/xml");
-    const items = Array.from(xml.querySelectorAll("item")).slice(0, 8);
-    if (!items.length) throw new Error("No headlines found");
+  const feedUrl = "https://feeds.bbci.co.uk/sport/rss.xml";
+  const proxyUrls = [
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(feedUrl)}`,
+    `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(feedUrl)}`,
+    `https://corsproxy.io/?url=${encodeURIComponent(feedUrl)}`,
+  ];
 
-    const listHtml = items
-      .map((item) => {
-        const title = item.querySelector("title")?.textContent ?? "Untitled";
-        const link = item.querySelector("link")?.textContent ?? "#";
-        return `<li><a href="${link}" target="_blank" rel="noopener">${title}</a></li>`;
-      })
-      .join("");
+  let lastError;
+  for (const proxyUrl of proxyUrls) {
+    try {
+      const text = await fetchTextWithTimeout(proxyUrl);
+      const xml = new DOMParser().parseFromString(text, "text/xml");
+      if (xml.querySelector("parsererror")) throw new Error("Malformed feed response");
+      const items = Array.from(xml.querySelectorAll("item")).slice(0, 8);
+      if (!items.length) throw new Error("No headlines found");
 
-    body.innerHTML = `<ul class="headline-list">${listHtml}</ul>`;
-  } catch (err) {
-    body.innerHTML = `<p class="error">Couldn't load sports headlines (${err.message}).</p>`;
+      const listHtml = items
+        .map((item) => {
+          const title = item.querySelector("title")?.textContent ?? "Untitled";
+          const link = item.querySelector("link")?.textContent ?? "#";
+          return `<li><a href="${link}" target="_blank" rel="noopener">${title}</a></li>`;
+        })
+        .join("");
+
+      body.innerHTML = `<ul class="headline-list">${listHtml}</ul>`;
+      return;
+    } catch (err) {
+      lastError = err;
+    }
   }
+
+  body.innerHTML = `<p class="error">Couldn't load sports headlines right now (${lastError?.message ?? "unknown error"}). Try refreshing in a bit.</p>`;
 }
 
 function formatGeneratedAt(iso) {
