@@ -1,5 +1,60 @@
 {
-  "generatedAt": "2026-08-05T09:15:00Z",
+  "generatedAt": "2026-08-11T09:00:00Z",
+  "stock": {
+    "symbol": "AVGO",
+    "name": "Broadcom",
+    "currentPrice": 423.76,
+    "currency": "USD",
+    "weekChangePct": 10.2,
+    "closes": [384.53, 423.76]
+  },
+  "sports": [
+    {
+      "headline": "Micky van de Ven signs new Tottenham contract through 2031",
+      "note": "The centre-back's new deal, reportedly worth over €75M, ends recent transfer speculation linking him to Barcelona and Liverpool.",
+      "url": "https://www.espn.com/soccer/story/_/id/49577092/micky-van-de-ven-signs-new-tottenham-hotspur-contract"
+    },
+    {
+      "headline": "Formula 1 bids farewell to Zandvoort as the 2026 Dutch Grand Prix closes a six-year chapter",
+      "note": "The August 21-23 race weekend, F1's first-ever Sprint on Dutch soil, will be the circuit's last for the indefinite future.",
+      "url": "https://www.formula1.com/en/latest/article/formula-1-heineken-dutch-grand-prix-2026.VYghWPhEDqYBlWbd1iKe6"
+    },
+    {
+      "headline": "Titans make Peter Skoronski the NFL's highest-paid guard",
+      "note": "A four-year, $100M extension with $88M guaranteed for the 24-year-old left guard.",
+      "url": "https://www.espn.com/nfl/story/_/id/49555284/sources-extension-makes-titans-peter-skoronski-top-paid-guard"
+    },
+    {
+      "headline": "Lions sign Jahmyr Gibbs to extension making him NFL's highest-paid running back",
+      "note": "A three-year, $67.5M deal ($22.5M AAV) with up to $75.75M in incentives.",
+      "url": "https://www.espn.com/nfl/story/_/id/49554890/lions-gibbs-relieved-deal-done-moves-focus-field"
+    },
+    {
+      "headline": "Jahmyr Gibbs, Lions agree to record-breaking contract extension",
+      "note": "The deal includes $51.5M in new guaranteed money, cementing Gibbs as the centerpiece of Detroit's offense.",
+      "url": "https://www.detroitnews.com/story/sports/nfl/lions/2026/08/06/jahmhyr-gibbs-detroit-lions-agree-to-record-breaking-contract-extension/89819828007/"
+    },
+    {
+      "headline": "T20 World Cup Europe Qualifier gets underway this week",
+      "note": "Runs August 14-21, part of a busy August calendar of T20 leagues worldwide.",
+      "url": "https://www.espncricinfo.com/ci/engine/series/index.html?season=2026%3Bview%3Dseason"
+    },
+    {
+      "headline": "US Open Tennis 2026 headlines a packed August sports calendar",
+      "note": "One of 61 major sporting events scheduled across 16 sports and 31 leagues this month.",
+      "url": "https://www.sportbusy.com/calendar/2026/august/"
+    },
+    {
+      "headline": "2026 men's major golf season wraps: McIlroy, Rai, Clark and Fox crowned champions",
+      "note": "Rory McIlroy retained his Masters title, Aaron Rai won the PGA Championship, Wyndham Clark took the US Open, and Ryan Fox won The Open.",
+      "url": "https://www.golfmonthly.com/news/mens-major-championship-2026-best-worst-rankings"
+    },
+    {
+      "headline": "Premier League's 2026 summer transfer window closes September 1",
+      "note": "Clubs are racing to finalize deals before the 23:00 BST deadline.",
+      "url": "https://www.premierleague.com/en/transfers"
+    }
+  ],
   "worldNews": [
     {
       "headline": "Russian missile barrage kills nine in Kyiv overnight as air defenses strain",

@@ -170,84 +170,40 @@ async function loadWeather() {
   }
 }
 
-async function fetchStockFromYahoo(symbol) {
-  const targetUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?range=5d&interval=1d`;
-  const text = await fetchTextViaProxies(targetUrl);
-  const data = JSON.parse(text);
-  const result = data?.chart?.result?.[0];
-  if (!result) throw new Error("No data returned");
-
-  const closes = (result.indicators?.quote?.[0]?.close ?? []).filter((v) => typeof v === "number");
-  if (closes.length < 2) throw new Error("Not enough data points");
-
-  return {
-    closes,
-    currentPrice: result.meta?.regularMarketPrice ?? closes[closes.length - 1],
-    currency: result.meta?.currency ?? "USD",
-  };
-}
-
-async function fetchStockFromStooq(symbol) {
-  const targetUrl = `https://stooq.com/q/d/l/?s=${symbol.toLowerCase()}.us&i=d`;
-  const csv = await fetchTextViaProxies(targetUrl);
-  const rows = csv
-    .trim()
-    .split("\n")
-    .slice(1)
-    .map((row) => row.split(","))
-    .filter((cols) => cols.length >= 5 && cols[4] !== "N/D");
-  const closes = rows.slice(-5).map((cols) => parseFloat(cols[4]));
-  if (closes.length < 2 || closes.some(Number.isNaN)) throw new Error("Not enough data points");
-
-  return { closes, currentPrice: closes[closes.length - 1], currency: "USD" };
-}
-
-async function loadStock() {
+function renderStock(stock, symbol) {
   const body = document.getElementById("stock-body");
-  const symbol = "AVGO";
-  try {
-    let quote;
-    try {
-      quote = await fetchStockFromYahoo(symbol);
-    } catch (yahooErr) {
-      quote = await fetchStockFromStooq(symbol);
-    }
-
-    const { closes, currentPrice, currency } = quote;
-    const weekStart = closes[0];
-    const change = currentPrice - weekStart;
-    const changePct = (change / weekStart) * 100;
-    const isUp = change >= 0;
-
-    const min = Math.min(...closes);
-    const max = Math.max(...closes);
-    const range = max - min || 1;
-    const w = 200;
-    const h = 50;
-    const points = closes
-      .map((v, i) => {
-        const x = (i / (closes.length - 1)) * w;
-        const y = h - ((v - min) / range) * h;
-        return `${x.toFixed(1)},${y.toFixed(1)}`;
-      })
-      .join(" ");
-
-    body.innerHTML = `
-      <div class="stock-price">${currentPrice.toFixed(2)} <span class="stock-currency">${currency}</span></div>
-      <div class="stock-change ${isUp ? "up" : "down"}">${isUp ? "&#9650;" : "&#9660;"} ${Math.abs(change).toFixed(2)} (${changePct.toFixed(2)}%) this week</div>
-      <svg class="stock-sparkline" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
-        <polyline points="${points}" fill="none" stroke="${isUp ? "#1d9a4c" : "#dc2626"}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
-      </svg>
-    `;
-  } catch (err) {
-    body.innerHTML = `<p class="error">Couldn't load ${symbol} quote (${err.message}).</p>`;
+  if (!body) return;
+  if (!stock || !Array.isArray(stock.closes) || stock.closes.length < 2) {
+    body.innerHTML = `<p class="error">No ${symbol} quote available yet.</p>`;
+    return;
   }
-}
 
-function stripHtml(html) {
-  const div = document.createElement("div");
-  div.innerHTML = html || "";
-  return (div.textContent || "").trim();
+  const { closes, currentPrice, currency } = stock;
+  const weekStart = closes[0];
+  const change = currentPrice - weekStart;
+  const changePct = stock.weekChangePct ?? (change / weekStart) * 100;
+  const isUp = change >= 0;
+
+  const min = Math.min(...closes);
+  const max = Math.max(...closes);
+  const range = max - min || 1;
+  const w = 200;
+  const h = 50;
+  const points = closes
+    .map((v, i) => {
+      const x = (i / (closes.length - 1)) * w;
+      const y = h - ((v - min) / range) * h;
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    })
+    .join(" ");
+
+  body.innerHTML = `
+    <div class="stock-price">${currentPrice.toFixed(2)} <span class="stock-currency">${currency}</span></div>
+    <div class="stock-change ${isUp ? "up" : "down"}">${isUp ? "&#9650;" : "&#9660;"} ${Math.abs(change).toFixed(2)} (${changePct.toFixed(2)}%) this week</div>
+    <svg class="stock-sparkline" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+      <polyline points="${points}" fill="none" stroke="${isUp ? "#1d9a4c" : "#dc2626"}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+    </svg>
+  `;
 }
 
 const CATEGORY_ICONS = {
@@ -291,139 +247,60 @@ function renderArticleList(items, category) {
     .join("")}</ul>`;
 }
 
-async function fetchTextWithTimeout(url, timeoutMs = 30000) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
-  try {
-    const res = await fetch(url, { signal: controller.signal });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.text();
-  } catch (err) {
-    if (err.name === "AbortError" || /aborted/i.test(err.message || "")) {
-      throw new Error("timed out");
-    }
-    throw err;
-  } finally {
-    clearTimeout(timer);
-  }
+function formatGeneratedAt(iso) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  return `Updated ${d.toLocaleDateString(undefined, { month: "short", day: "numeric" })} · ${d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}`;
 }
 
-function firstImgSrc(html) {
-  const match = /<img[^>]+src=["']([^"']+)["']/i.exec(html || "");
-  return match ? match[1] : "";
-}
-
-function extractRssArticle(item) {
-  const title = item.querySelector("title")?.textContent ?? "Untitled";
-  const link = item.querySelector("link")?.textContent ?? "#";
-  const rawDescription = item.querySelector("description")?.textContent ?? "";
-  const contentEncoded = item.getElementsByTagName("content:encoded")[0]?.textContent ?? "";
-  const description = stripHtml(rawDescription) || stripHtml(contentEncoded);
-
-  const thumbnail =
-    item.getElementsByTagName("media:thumbnail")[0]?.getAttribute("url") ||
-    item.getElementsByTagName("media:content")[0]?.getAttribute("url") ||
-    item.querySelector("enclosure[type^='image']")?.getAttribute("url") ||
-    firstImgSrc(contentEncoded) ||
-    firstImgSrc(rawDescription) ||
-    "";
-
-  return { headline: title, note: description.slice(0, 240), url: link, image: thumbnail };
-}
-
-const FEEDS = {
-  sports: "https://feeds.bbci.co.uk/sport/rss.xml",
-  world: "https://feeds.bbci.co.uk/news/world/rss.xml",
-  finance: "https://feeds.bbci.co.uk/news/business/rss.xml",
-  ai: "https://martech.org/feed/",
-};
-
-async function fetchTextViaProxies(targetUrl) {
-  // corsproxy.io's free tier now only works from localhost, so it's excluded here.
-  const proxyUrls = [
-    `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`,
-    `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
-    `https://thingproxy.freeboard.io/fetch/${targetUrl}`,
+async function loadDigest() {
+  const sections = [
+    { body: "sports-body", field: "sports", note: "note", category: "sports" },
+    { body: "worldnews-body", field: "worldNews", note: "why", category: "world" },
+    { body: "businessfinance-body", field: "businessFinance", note: "why", category: "finance" },
+    { body: "aisales-body", field: "aiSales", note: "takeaway", category: "ai" },
   ];
 
   try {
-    return await Promise.any(proxyUrls.map((proxyUrl) => fetchTextWithTimeout(proxyUrl)));
-  } catch (aggregateErr) {
-    throw aggregateErr.errors?.[0] ?? new Error("All sources unavailable");
-  }
-}
+    const res = await fetch(`data/digest.json?_=${Date.now()}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const updatedLabel = formatGeneratedAt(data.generatedAt);
 
-function parseFeedText(text, limit) {
-  const xml = new DOMParser().parseFromString(text, "text/xml");
-  if (xml.querySelector("parsererror")) throw new Error("Malformed feed response");
-  const items = Array.from(xml.querySelectorAll("item")).slice(0, limit);
-  if (!items.length) throw new Error("No headlines found");
-  return items.map(extractRssArticle);
-}
-
-async function fetchFeedArticles(feedUrl, limit = 15) {
-  const text = await fetchTextViaProxies(feedUrl);
-  return parseFeedText(text, limit);
-}
-
-async function loadDigestFallback(field, noteField) {
-  const res = await fetch(`data/digest.json?_=${Date.now()}`);
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const data = await res.json();
-  return (data[field] || []).map((item) => ({
-    headline: item.headline,
-    note: item[noteField],
-    url: item.url,
-    image: item.image,
-  }));
-}
-
-async function loadFeedSection({ bodyId, feedUrl, category, fallback }) {
-  const body = document.getElementById(bodyId);
-  if (!body) return;
-  try {
-    const articles = await fetchFeedArticles(feedUrl);
-    body.innerHTML = renderArticleList(articles, category);
-  } catch (err) {
-    if (fallback) {
-      try {
-        const articles = await fallback();
-        body.innerHTML = renderArticleList(articles, category);
-        return;
-      } catch (fallbackErr) {
-        body.innerHTML = `<p class="error">Couldn't load headlines right now (${fallbackErr.message}). Try refreshing in a bit.</p>`;
-        return;
-      }
+    for (const section of sections) {
+      const bodyEl = document.getElementById(section.body);
+      if (!bodyEl) continue;
+      const articles = (data[section.field] || []).map((item) => ({
+        headline: item.headline,
+        note: item[section.note],
+        url: item.url,
+        image: item.image,
+      }));
+      bodyEl.innerHTML = renderArticleList(articles, section.category);
     }
-    body.innerHTML = `<p class="error">Couldn't load headlines right now (${err.message}). Try refreshing in a bit.</p>`;
-  }
-}
 
-function loadAllFeeds() {
-  loadFeedSection({ bodyId: "sports-body", feedUrl: FEEDS.sports, category: "sports" });
-  loadFeedSection({
-    bodyId: "worldnews-body",
-    feedUrl: FEEDS.world,
-    category: "world",
-    fallback: () => loadDigestFallback("worldNews", "why"),
-  });
-  loadFeedSection({
-    bodyId: "businessfinance-body",
-    feedUrl: FEEDS.finance,
-    category: "finance",
-    fallback: () => loadDigestFallback("businessFinance", "why"),
-  });
-  loadFeedSection({
-    bodyId: "aisales-body",
-    feedUrl: FEEDS.ai,
-    category: "ai",
-    fallback: () => loadDigestFallback("aiSales", "takeaway"),
-  });
+    renderStock(data.stock, data.stock?.symbol ?? "AVGO");
+
+    const stockWidget = document.getElementById("stock-widget");
+    if (stockWidget && data.stock?.name) {
+      stockWidget.querySelector("h2").textContent = `${data.stock.name} (${data.stock.symbol}) — 1W`;
+    }
+
+    const footerNote = document.getElementById("data-updated");
+    if (footerNote) footerNote.textContent = updatedLabel;
+  } catch (err) {
+    const msg = `<p class="error">Couldn't load today's digest (${err.message}).</p>`;
+    for (const section of sections) {
+      const bodyEl = document.getElementById(section.body);
+      if (bodyEl) bodyEl.innerHTML = msg;
+    }
+    const stockBody = document.getElementById("stock-body");
+    if (stockBody) stockBody.innerHTML = msg;
+  }
 }
 
 setDateHeading();
 startClock();
 buildCalendar();
 loadWeather();
-loadStock();
-loadAllFeeds();
+loadDigest();
