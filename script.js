@@ -262,13 +262,18 @@ function renderArticleList(items, category) {
     .join("")}</ul>`;
 }
 
-async function fetchTextWithTimeout(url, timeoutMs = 8000) {
+async function fetchTextWithTimeout(url, timeoutMs = 15000) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const res = await fetch(url, { signal: controller.signal });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return await res.text();
+  } catch (err) {
+    if (err.name === "AbortError" || /aborted/i.test(err.message || "")) {
+      throw new Error("timed out");
+    }
+    throw err;
   } finally {
     clearTimeout(timer);
   }
