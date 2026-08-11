@@ -254,6 +254,37 @@ body {
   color: var(--muted);
 }
 
+.stock-price {
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.stock-currency {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.stock-change {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0.15rem 0 0.6rem;
+}
+
+.stock-change.up {
+  color: #1d9a4c;
+}
+
+.stock-change.down {
+  color: #dc2626;
+}
+
+.stock-sparkline {
+  width: 100%;
+  height: 50px;
+  display: block;
+}
+
 .bullet-list {
   margin: 0;
   padding-left: 0;

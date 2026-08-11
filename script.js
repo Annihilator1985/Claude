@@ -170,6 +170,51 @@ async function loadWeather() {
   }
 }
 
+async function loadStock() {
+  const body = document.getElementById("stock-body");
+  const symbol = "AVGO";
+  try {
+    const targetUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?range=5d&interval=1d`;
+    const text = await fetchTextViaProxies(targetUrl);
+    const data = JSON.parse(text);
+    const result = data?.chart?.result?.[0];
+    if (!result) throw new Error("No data returned");
+
+    const closes = (result.indicators?.quote?.[0]?.close ?? []).filter((v) => typeof v === "number");
+    if (closes.length < 2) throw new Error("Not enough data points");
+
+    const currentPrice = result.meta?.regularMarketPrice ?? closes[closes.length - 1];
+    const weekStart = closes[0];
+    const change = currentPrice - weekStart;
+    const changePct = (change / weekStart) * 100;
+    const isUp = change >= 0;
+    const currency = result.meta?.currency ?? "USD";
+
+    const min = Math.min(...closes);
+    const max = Math.max(...closes);
+    const range = max - min || 1;
+    const w = 200;
+    const h = 50;
+    const points = closes
+      .map((v, i) => {
+        const x = (i / (closes.length - 1)) * w;
+        const y = h - ((v - min) / range) * h;
+        return `${x.toFixed(1)},${y.toFixed(1)}`;
+      })
+      .join(" ");
+
+    body.innerHTML = `
+      <div class="stock-price">${currentPrice.toFixed(2)} <span class="stock-currency">${currency}</span></div>
+      <div class="stock-change ${isUp ? "up" : "down"}">${isUp ? "&#9650;" : "&#9660;"} ${Math.abs(change).toFixed(2)} (${changePct.toFixed(2)}%) this week</div>
+      <svg class="stock-sparkline" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+        <polyline points="${points}" fill="none" stroke="${isUp ? "#1d9a4c" : "#dc2626"}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+      </svg>
+    `;
+  } catch (err) {
+    body.innerHTML = `<p class="error">Couldn't load ${symbol} quote (${err.message}).</p>`;
+  }
+}
+
 function stripHtml(html) {
   const div = document.createElement("div");
   div.innerHTML = html || "";
@@ -259,8 +304,22 @@ const FEEDS = {
   ai: "https://martech.org/feed/",
 };
 
-async function fetchViaProxy(proxyUrl, limit) {
-  const text = await fetchTextWithTimeout(proxyUrl);
+async function fetchTextViaProxies(targetUrl) {
+  // corsproxy.io's free tier now only works from localhost, so it's excluded here.
+  const proxyUrls = [
+    `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`,
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
+    `https://thingproxy.freeboard.io/fetch/${targetUrl}`,
+  ];
+
+  try {
+    return await Promise.any(proxyUrls.map((proxyUrl) => fetchTextWithTimeout(proxyUrl)));
+  } catch (aggregateErr) {
+    throw aggregateErr.errors?.[0] ?? new Error("All sources unavailable");
+  }
+}
+
+function parseFeedText(text, limit) {
   const xml = new DOMParser().parseFromString(text, "text/xml");
   if (xml.querySelector("parsererror")) throw new Error("Malformed feed response");
   const items = Array.from(xml.querySelectorAll("item")).slice(0, limit);
@@ -269,18 +328,8 @@ async function fetchViaProxy(proxyUrl, limit) {
 }
 
 async function fetchFeedArticles(feedUrl, limit = 15) {
-  // corsproxy.io's free tier now only works from localhost, so it's excluded here.
-  const proxyUrls = [
-    `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(feedUrl)}`,
-    `https://api.allorigins.win/raw?url=${encodeURIComponent(feedUrl)}`,
-    `https://thingproxy.freeboard.io/fetch/${feedUrl}`,
-  ];
-
-  try {
-    return await Promise.any(proxyUrls.map((proxyUrl) => fetchViaProxy(proxyUrl, limit)));
-  } catch (aggregateErr) {
-    throw aggregateErr.errors?.[0] ?? new Error("Feed unavailable");
-  }
+  const text = await fetchTextViaProxies(feedUrl);
+  return parseFeedText(text, limit);
 }
 
 async function loadDigestFallback(field, noteField) {
@@ -342,4 +391,5 @@ setDateHeading();
 startClock();
 buildCalendar();
 loadWeather();
+loadStock();
 loadAllFeeds();
