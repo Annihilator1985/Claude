@@ -170,25 +170,54 @@ async function loadWeather() {
   }
 }
 
+async function fetchStockFromYahoo(symbol) {
+  const targetUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?range=5d&interval=1d`;
+  const text = await fetchTextViaProxies(targetUrl);
+  const data = JSON.parse(text);
+  const result = data?.chart?.result?.[0];
+  if (!result) throw new Error("No data returned");
+
+  const closes = (result.indicators?.quote?.[0]?.close ?? []).filter((v) => typeof v === "number");
+  if (closes.length < 2) throw new Error("Not enough data points");
+
+  return {
+    closes,
+    currentPrice: result.meta?.regularMarketPrice ?? closes[closes.length - 1],
+    currency: result.meta?.currency ?? "USD",
+  };
+}
+
+async function fetchStockFromStooq(symbol) {
+  const targetUrl = `https://stooq.com/q/d/l/?s=${symbol.toLowerCase()}.us&i=d`;
+  const csv = await fetchTextViaProxies(targetUrl);
+  const rows = csv
+    .trim()
+    .split("\n")
+    .slice(1)
+    .map((row) => row.split(","))
+    .filter((cols) => cols.length >= 5 && cols[4] !== "N/D");
+  const closes = rows.slice(-5).map((cols) => parseFloat(cols[4]));
+  if (closes.length < 2 || closes.some(Number.isNaN)) throw new Error("Not enough data points");
+
+  return { closes, currentPrice: closes[closes.length - 1], currency: "USD" };
+}
+
 async function loadStock() {
   const body = document.getElementById("stock-body");
   const symbol = "AVGO";
   try {
-    const targetUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?range=5d&interval=1d`;
-    const text = await fetchTextViaProxies(targetUrl);
-    const data = JSON.parse(text);
-    const result = data?.chart?.result?.[0];
-    if (!result) throw new Error("No data returned");
+    let quote;
+    try {
+      quote = await fetchStockFromYahoo(symbol);
+    } catch (yahooErr) {
+      quote = await fetchStockFromStooq(symbol);
+    }
 
-    const closes = (result.indicators?.quote?.[0]?.close ?? []).filter((v) => typeof v === "number");
-    if (closes.length < 2) throw new Error("Not enough data points");
-
-    const currentPrice = result.meta?.regularMarketPrice ?? closes[closes.length - 1];
+    const { closes, currentPrice, currency } = quote;
     const weekStart = closes[0];
     const change = currentPrice - weekStart;
     const changePct = (change / weekStart) * 100;
     const isUp = change >= 0;
-    const currency = result.meta?.currency ?? "USD";
 
     const min = Math.min(...closes);
     const max = Math.max(...closes);
@@ -262,7 +291,7 @@ function renderArticleList(items, category) {
     .join("")}</ul>`;
 }
 
-async function fetchTextWithTimeout(url, timeoutMs = 15000) {
+async function fetchTextWithTimeout(url, timeoutMs = 30000) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
