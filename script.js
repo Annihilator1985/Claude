@@ -259,27 +259,28 @@ const FEEDS = {
   ai: "https://martech.org/feed/",
 };
 
+async function fetchViaProxy(proxyUrl, limit) {
+  const text = await fetchTextWithTimeout(proxyUrl);
+  const xml = new DOMParser().parseFromString(text, "text/xml");
+  if (xml.querySelector("parsererror")) throw new Error("Malformed feed response");
+  const items = Array.from(xml.querySelectorAll("item")).slice(0, limit);
+  if (!items.length) throw new Error("No headlines found");
+  return items.map(extractRssArticle);
+}
+
 async function fetchFeedArticles(feedUrl, limit = 15) {
+  // corsproxy.io's free tier now only works from localhost, so it's excluded here.
   const proxyUrls = [
-    `https://api.allorigins.win/raw?url=${encodeURIComponent(feedUrl)}`,
     `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(feedUrl)}`,
-    `https://corsproxy.io/?url=${encodeURIComponent(feedUrl)}`,
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(feedUrl)}`,
+    `https://thingproxy.freeboard.io/fetch/${feedUrl}`,
   ];
 
-  let lastError;
-  for (const proxyUrl of proxyUrls) {
-    try {
-      const text = await fetchTextWithTimeout(proxyUrl);
-      const xml = new DOMParser().parseFromString(text, "text/xml");
-      if (xml.querySelector("parsererror")) throw new Error("Malformed feed response");
-      const items = Array.from(xml.querySelectorAll("item")).slice(0, limit);
-      if (!items.length) throw new Error("No headlines found");
-      return items.map(extractRssArticle);
-    } catch (err) {
-      lastError = err;
-    }
+  try {
+    return await Promise.any(proxyUrls.map((proxyUrl) => fetchViaProxy(proxyUrl, limit)));
+  } catch (aggregateErr) {
+    throw aggregateErr.errors?.[0] ?? new Error("Feed unavailable");
   }
-  throw lastError ?? new Error("Feed unavailable");
 }
 
 async function loadDigestFallback(field, noteField) {
