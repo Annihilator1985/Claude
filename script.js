@@ -230,11 +230,16 @@ function categoryThumb(category, seedText, hidden) {
   </div>`;
 }
 
+function screenshotUrl(articleUrl) {
+  return `https://s.wordpress.com/mshots/v1/${encodeURIComponent(articleUrl)}?w=500`;
+}
+
 function renderArticleList(items, category) {
   return `<ul class="bullet-list">${(items || [])
     .map((item) => {
-      const thumb = item.image
-        ? `<img class="bullet-thumb" src="${item.image}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      const imgSrc = item.image || (item.url ? screenshotUrl(item.url) : "");
+      const thumb = imgSrc
+        ? `<img class="bullet-thumb" src="${imgSrc}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
            ${categoryThumb(category, item.headline, true)}`
         : categoryThumb(category, item.headline, false);
       return `<li>
